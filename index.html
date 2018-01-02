@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>My first three.js app</title>
+        <link rel="stylesheet" href="index.css"/>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+	<body>
+        <div id="container"></div>
+		<script src="three.js"></script>
+        <script src="OrbitControls.js"></script>
+        <script>
+            
+            var container = document.getElementById('container');
+            var backgroundScene = new THREE.Color( 'rgb(200,200,200)' );
+            
+            var scene = new THREE.Scene();
+                scene.background = backgroundScene;
+            
+                                /* PerspectiveCamera( angle (FOV) , ratio (Largeur / Hauteur , pointDepart, pointArriver)) Les 2 derniers paramètre permettre de déterminer le champs de vision */
+            var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+            /* Permettra le rendu de la scene */
+            var renderer = new THREE.WebGLRenderer();
+            
+            // Grille
+            var gridHelper = new THREE.GridHelper( 100, 10 );
+            gridHelper.position.y = 0;
+            scene.add( gridHelper );
+            
+            /* Configure la taille du rendu */
+            renderer.setSize( window.innerWidth, window.innerHeight );
+            
+            /* Ajoute le rendu dans la div container*/
+            container.appendChild( renderer.domElement );
+            
+            var geometry = new THREE.BoxGeometry( 10, 10, 10 );
+            var material = new THREE.MeshLambertMaterial( {color: 0xF3FFE2} );
+            var cube = new THREE.Mesh( geometry, material );
+            scene.add( cube );
+            
+            //var light = new THREE.AmbientLight(0xffffff,0.5);
+            //scene.add(light);
+            
+            var light = new THREE.DirectionalLight( 0xFF0000 );
+            light.position.set( 0, 1, 0 );
+            scene.add( light );
+            
+            camera.position.y = 30;
+            camera.position.z = 70;
+            
+            var controls = new THREE.OrbitControls( camera, renderer.domElement );
+            controls.addEventListener( 'change', render );
+            controls.enableZoom = false;
+            render()
+            
+            
+            function render(){
+                renderer.render(scene, camera);
+            }
+
+        </script>
+	</body>
+</html>
